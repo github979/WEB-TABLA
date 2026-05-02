@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🥁 Web Tabla
 
 A browser-based tabla instrument with low-latency Web Audio API playback, Keherwa taal loop, and a recording system.
@@ -102,3 +103,7 @@ npx serve .
 ## Browser Support
 
 All modern browsers (Chrome, Firefox, Safari, Edge). Requires Web Audio API.
+=======
+# WEB-TABLA
+Inspired by the idea of web-based musical instruments, Web Tabla recreates a playable tabla experience in the browser. With low-latency sound, keyboard controls, and rhythm loops, it turns your browser into a digital percussion instrument.
+>>>>>>> 22ca0b02c13f594e1d28150673a396746a7dcceb
