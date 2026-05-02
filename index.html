@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web Tabla — Browser Instrument</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Noto+Serif:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background grain texture overlay -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Ambient radial glow -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-deva">तबला</span>
+        <span class="logo-en">Web Tabla</span>
+      </div>
+      <div class="header-meta">
+        <span class="status-dot" id="audioStatusDot"></span>
+        <span class="status-text" id="audioStatusText">Initializing…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================== MAIN ===================== -->
+  <main class="app-main">
+
+    <!-- ── DRUM PADS SECTION ── -->
+    <section class="pads-section" aria-label="Tabla Drum Pads">
+      <div class="pads-container">
+
+        <!-- Dayan (right drum) group -->
+        <div class="drum-group dayan-group">
+          <div class="drum-label-group">
+            <span class="drum-name">दायाँ</span>
+            <span class="drum-name-en">Dayan</span>
+          </div>
+          <div class="pads-row">
+
+            <!-- NA pad -->
+            <div class="pad-wrapper">
+              <button
+                class="pad"
+                id="pad-na"
+                data-bol="na"
+                data-key="A"
+                aria-label="Na — press A"
+              >
+                <div class="pad-ring pad-ring-outer"></div>
+                <div class="pad-ring pad-ring-mid"></div>
+                <div class="pad-inner">
+                  <span class="bol-deva">ना</span>
+                  <span class="bol-latin">Na</span>
+                </div>
+                <div class="hit-ripple"></div>
+              </button>
+              <kbd class="key-badge">A</kbd>
+            </div>
+
+            <!-- DHA pad -->
+            <div class="pad-wrapper">
+              <button
+                class="pad pad--large"
+                id="pad-dha"
+                data-bol="dha"
+                data-key="S"
+                aria-label="Dha — press S"
+              >
+                <div class="pad-ring pad-ring-outer"></div>
+                <div class="pad-ring pad-ring-mid"></div>
+                <div class="pad-inner">
+                  <span class="bol-deva">धा</span>
+                  <span class="bol-latin">Dha</span>
+                </div>
+                <div class="hit-ripple"></div>
+              </button>
+              <kbd class="key-badge">S</kbd>
+            </div>
+
+            <!-- DHIN pad -->
+            <div class="pad-wrapper">
+              <button
+                class="pad"
+                id="pad-dhin"
+                data-bol="dhin"
+                data-key="D"
+                aria-label="Dhin — press D"
+              >
+                <div class="pad-ring pad-ring-outer"></div>
+                <div class="pad-ring pad-ring-mid"></div>
+                <div class="pad-inner">
+                  <span class="bol-deva">धिन</span>
+                  <span class="bol-latin">Dhin</span>
+                </div>
+                <div class="hit-ripple"></div>
+              </button>
+              <kbd class="key-badge">D</kbd>
+            </div>
+
+          </div>
+        </div><!-- /dayan-group -->
+
+        <!-- Bayan (left drum) group -->
+        <div class="drum-group bayan-group">
+          <div class="drum-label-group">
+            <span class="drum-name">बायाँ</span>
+            <span class="drum-name-en">Bayan</span>
+          </div>
+          <div class="pads-row">
+
+            <!-- GE pad -->
+            <div class="pad-wrapper">
+              <button
+                class="pad pad--bayan"
+                id="pad-ge"
+                data-bol="ge"
+                data-key="F"
+                aria-label="Ge — press F"
+              >
+                <div class="pad-ring pad-ring-outer"></div>
+                <div class="pad-ring pad-ring-mid"></div>
+                <div class="pad-inner">
+                  <span class="bol-deva">गे</span>
+                  <span class="bol-latin">Ge</span>
+                </div>
+                <div class="hit-ripple"></div>
+              </button>
+              <kbd class="key-badge">F</kbd>
+            </div>
+
+          </div>
+        </div><!-- /bayan-group -->
+
+      </div><!-- /pads-container -->
+    </section>
+
+    <!-- ── CONTROLS ROW ── -->
+    <section class="controls-section" aria-label="Playback Controls">
+      <div class="controls-inner">
+
+        <!-- Volume -->
+        <div class="control-group">
+          <label class="control-label" for="volumeSlider">
+            <span class="ctrl-icon">🔊</span> Volume
+          </label>
+          <div class="slider-track-wrap">
+            <input
+              type="range"
+              id="volumeSlider"
+              min="0" max="1" step="0.01" value="0.8"
+              aria-label="Volume"
+            />
+            <span class="slider-value" id="volumeValue">80%</span>
+          </div>
+        </div>
+
+        <!-- BPM -->
+        <div class="control-group">
+          <label class="control-label" for="bpmSlider">
+            <span class="ctrl-icon">♩</span> Tempo
+          </label>
+          <div class="slider-track-wrap">
+            <input
+              type="range"
+              id="bpmSlider"
+              min="40" max="240" step="1" value="100"
+              aria-label="Beats per minute"
+            />
+            <span class="slider-value" id="bpmValue">100 BPM</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── TAAL / RHYTHM SECTION ── -->
+    <section class="taal-section" aria-label="Keherwa Taal — 8 Beat Rhythm Loop">
+      <div class="taal-header">
+        <div class="taal-title-block">
+          <h2 class="taal-name">कहरवा ताल</h2>
+          <span class="taal-name-en">Keherwa Taal — 8 Beats</span>
+        </div>
+        <div class="taal-controls">
+          <button class="btn btn--taal" id="taalPlayBtn" aria-label="Play Keherwa Taal">
+            <span class="btn-icon">▶</span>
+            <span class="btn-text">Play Taal</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Beat indicators -->
+      <div class="beat-grid" id="beatGrid" aria-live="polite" aria-label="Beat position indicator">
+        <!-- 8 beat cells generated by JS -->
+      </div>
+
+      <!-- Taal sequence display -->
+      <div class="taal-sequence" id="taalSequence">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- ── RECORDER SECTION ── -->
+    <section class="recorder-section" aria-label="Recorder">
+      <div class="recorder-header">
+        <h2 class="recorder-title">
+          <span class="rec-dot" id="recDot"></span>
+          Recorder
+        </h2>
+        <div class="recorder-controls">
+          <button class="btn btn--rec" id="recRecordBtn" aria-label="Start/Stop recording">
+            <span class="btn-icon">⏺</span>
+            <span class="btn-text">Record</span>
+          </button>
+          <button class="btn btn--play-rec" id="recPlayBtn" aria-label="Play recording" disabled>
+            <span class="btn-icon">▶</span>
+            <span class="btn-text">Play</span>
+          </button>
+          <button class="btn btn--clear-rec" id="recClearBtn" aria-label="Clear recording" disabled>
+            <span class="btn-icon">✕</span>
+            <span class="btn-text">Clear</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Recorded events timeline preview -->
+      <div class="rec-timeline" id="recTimeline">
+        <span class="rec-empty-hint">No recording yet — hit Record and start playing</span>
+      </div>
+    </section>
+
+  </main><!-- /app-main -->
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="app-footer">
+    <p>Keyboard: <kbd>A</kbd> Na &nbsp;·&nbsp; <kbd>S</kbd> Dha &nbsp;·&nbsp; <kbd>D</kbd> Dhin &nbsp;·&nbsp; <kbd>F</kbd> Ge</p>
+    <p class="footer-sub">Web Audio API · Low-latency playback</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,930 @@
+/* ============================================================
+   WEB TABLA — style.css
+   Aesthetic: Indian classical instrument — warm copper/amber
+   dark theme with wood-grain textures and geometric patterns.
+   ============================================================ */
+
+/* ── 1. DESIGN TOKENS ── */
+:root {
+  /* Core palette */
+  --bg-base:         #0e0b07;
+  --bg-surface:      #17120a;
+  --bg-raised:       #1f1710;
+  --bg-highlight:    #2a1f12;
+
+  /* Copper / amber accent system */
+  --copper-dark:     #7a3e1a;
+  --copper:          #c06020;
+  --copper-light:    #e07828;
+  --gold:            #d4a020;
+  --gold-light:      #f0c040;
+  --amber:           #f5a623;
+  --cream:           #f2e8d0;
+
+  /* Bayan (left drum) accent — deeper, richer */
+  --bayan-dark:      #1e2e3a;
+  --bayan:           #2a5070;
+  --bayan-light:     #3a80a8;
+  --bayan-glow:      rgba(58, 128, 168, 0.5);
+
+  /* Dayan accent */
+  --dayan-glow:      rgba(224, 120, 40, 0.55);
+
+  /* Text */
+  --text-primary:    #f2e8d0;
+  --text-secondary:  #a89070;
+  --text-muted:      #5a4830;
+
+  /* Beat / UI states */
+  --beat-active:     #f0c040;
+  --beat-sam:        #e07828;   /* Sam (beat 1 / the "X") */
+  --beat-khali:      #3a80a8;   /* Khali (the "0") */
+  --rec-red:         #e03030;
+  --rec-red-glow:    rgba(224, 48, 48, 0.5);
+
+  /* Radii / spacing */
+  --radius-pad:      50%;
+  --radius-btn:      6px;
+  --radius-card:     12px;
+  --gap-pad:         2.5rem;
+
+  /* Transitions */
+  --ease-spring:     cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out:        cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast:          120ms;
+  --t-normal:        250ms;
+  --t-slow:          500ms;
+
+  /* Shadows */
+  --shadow-pad:      0 8px 32px rgba(0,0,0,0.6), 0 2px 8px rgba(0,0,0,0.4);
+  --shadow-glow-dayan: 0 0 30px 6px var(--dayan-glow);
+  --shadow-glow-bayan: 0 0 30px 6px var(--bayan-glow);
+}
+
+/* ── 2. RESET & BASE ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: 'Noto Serif', Georgia, serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── 3. BACKGROUND EFFECTS ── */
+
+/* SVG grain texture via pseudo-element */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Radial ambient glow in center */
+.ambient-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 45% at 50% 38%, rgba(192, 96, 32, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 30% at 20% 70%, rgba(42, 80, 112, 0.08) 0%, transparent 60%);
+}
+
+/* Decorative geometric top-border line */
+body::before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--copper), var(--gold), var(--copper-light), var(--gold), var(--copper), transparent);
+  z-index: 100;
+}
+
+/* ── 4. HEADER ── */
+.app-header {
+  position: relative;
+  z-index: 10;
+  padding: 1.5rem 2rem 1rem;
+  border-bottom: 1px solid rgba(192,96,32,0.15);
+  background: linear-gradient(180deg, rgba(14,11,7,0.95) 0%, transparent 100%);
+}
+
+.header-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-deva {
+  font-family: 'Yatra One', serif;
+  font-size: 2rem;
+  color: var(--gold-light);
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 20px rgba(240,192,64,0.4);
+}
+
+.logo-en {
+  font-family: 'Noto Serif', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: background var(--t-normal), box-shadow var(--t-normal);
+}
+
+.status-dot.ready {
+  background: #50c878;
+  box-shadow: 0 0 8px rgba(80,200,120,0.6);
+}
+
+.status-dot.error {
+  background: var(--rec-red);
+}
+
+.status-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em;
+}
+
+/* ── 5. MAIN LAYOUT ── */
+.app-main {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+/* ── 6. PADS SECTION ── */
+.pads-section {
+  display: flex;
+  justify-content: center;
+}
+
+.pads-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.drum-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.drum-label-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.drum-name {
+  font-family: 'Yatra One', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  letter-spacing: 0.06em;
+}
+
+.drum-name-en {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.pads-row {
+  display: flex;
+  gap: var(--gap-pad);
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── PAD WRAPPER (pad + key badge) ── */
+.pad-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* ── PAD BUTTON ── */
+.pad {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-pad);
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+  outline: none;
+  transition:
+    transform var(--t-fast) var(--ease-spring),
+    filter var(--t-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pad--large {
+  width: 150px;
+  height: 150px;
+}
+
+.pad--bayan {
+  width: 145px;
+  height: 145px;
+}
+
+/* Outer decorative ring */
+.pad-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.pad-ring-outer {
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(255,220,140,0.18) 0%, transparent 55%),
+    conic-gradient(
+      from 0deg,
+      #3a2210, #7a4820, #c06020, #d4a020, #c06020, #7a4820, #3a2210, #7a4820, #c06020, #3a2210
+    );
+  box-shadow: var(--shadow-pad), inset 0 2px 6px rgba(255,200,100,0.15);
+}
+
+.pad--bayan .pad-ring-outer {
+  background:
+    radial-gradient(ellipse at 30% 25%, rgba(140,200,255,0.12) 0%, transparent 55%),
+    conic-gradient(
+      from 0deg,
+      #0e1e2a, #1e3a50, #2a5070, #3a80a8, #2a5070, #1e3a50, #0e1e2a, #1e3a50, #2a5070, #0e1e2a
+    );
+  box-shadow: var(--shadow-pad), inset 0 2px 6px rgba(100,180,255,0.1);
+}
+
+.pad-ring-mid {
+  inset: 10px;
+  background:
+    radial-gradient(ellipse at 35% 30%, rgba(255,200,100,0.1) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #1a1008 60%, #2a1a0a 100%);
+  border: 1px solid rgba(192,96,32,0.3);
+}
+
+.pad--bayan .pad-ring-mid {
+  background:
+    radial-gradient(ellipse at 35% 30%, rgba(100,180,255,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 50%, #08141e 60%, #101e2e 100%);
+  border: 1px solid rgba(42,80,112,0.4);
+}
+
+/* Inner hit surface — the "syahi" (black center) */
+.pad-inner {
+  position: absolute;
+  inset: 22px;
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse at 38% 30%, rgba(255,200,100,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, #0e0a05 55%, #1a1208 100%);
+  border: 1px solid rgba(192,96,32,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  transition: background var(--t-fast);
+}
+
+.pad--bayan .pad-inner {
+  background:
+    radial-gradient(ellipse at 38% 30%, rgba(100,180,255,0.05) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, #04080e 55%, #081018 100%);
+  border: 1px solid rgba(42,80,112,0.3);
+}
+
+.bol-deva {
+  font-family: 'Yatra One', serif;
+  font-size: 1.3rem;
+  color: var(--gold-light);
+  line-height: 1;
+  text-shadow: 0 0 10px rgba(240,192,64,0.3);
+  transition: text-shadow var(--t-fast), color var(--t-fast);
+}
+
+.pad--large .bol-deva { font-size: 1.6rem; }
+.pad--bayan .bol-deva {
+  color: var(--bayan-light);
+  text-shadow: 0 0 10px rgba(58,128,168,0.4);
+}
+
+.bol-latin {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Ripple element */
+.hit-ripple {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 2px solid transparent;
+  opacity: 0;
+}
+
+/* ── PAD HIT STATE ── */
+.pad.is-hitting {
+  transform: scale(0.93);
+  filter: brightness(1.15);
+}
+
+.pad.is-hitting .pad-ring-outer {
+  box-shadow:
+    var(--shadow-pad),
+    var(--shadow-glow-dayan),
+    inset 0 2px 6px rgba(255,200,100,0.25);
+}
+
+.pad--bayan.is-hitting .pad-ring-outer {
+  box-shadow:
+    var(--shadow-pad),
+    var(--shadow-glow-bayan),
+    inset 0 2px 6px rgba(100,180,255,0.2);
+}
+
+.pad.is-hitting .bol-deva {
+  color: #fff;
+  text-shadow: 0 0 16px rgba(240,192,64,0.8);
+}
+
+.pad--bayan.is-hitting .bol-deva {
+  color: #c8e8ff;
+  text-shadow: 0 0 16px rgba(58,128,168,0.9);
+}
+
+.pad.is-hitting .hit-ripple {
+  animation: ripplePulse 0.5s var(--ease-out) forwards;
+  border-color: var(--gold);
+}
+
+.pad--bayan.is-hitting .hit-ripple {
+  border-color: var(--bayan-light);
+}
+
+@keyframes ripplePulse {
+  0%   { inset: 5px;  opacity: 0.8; }
+  100% { inset: -12px; opacity: 0; }
+}
+
+/* ── KEYBOARD KEY BADGE ── */
+.key-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  background: var(--bg-raised);
+  border: 1px solid var(--text-muted);
+  color: var(--text-secondary);
+  letter-spacing: 0.1em;
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  user-select: none;
+}
+
+.key-badge.active {
+  background: var(--copper-dark);
+  border-color: var(--copper-light);
+  color: var(--gold-light);
+  box-shadow: 0 0 8px rgba(224,120,40,0.4);
+}
+
+/* ── 7. CONTROLS SECTION ── */
+.controls-section {
+  display: flex;
+  justify-content: center;
+}
+
+.controls-inner {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: var(--bg-surface);
+  border: 1px solid rgba(192,96,32,0.12);
+  border-radius: var(--radius-card);
+  padding: 1.2rem 2rem;
+  width: 100%;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 200px;
+  flex: 1;
+}
+
+.control-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.ctrl-icon { font-size: 1rem; }
+
+.slider-track-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* Custom range input */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  background: var(--bg-highlight);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg-base);
+  box-shadow: 0 0 8px rgba(212,160,32,0.5);
+  cursor: pointer;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 14px rgba(212,160,32,0.8);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold);
+  border: 2px solid var(--bg-base);
+  cursor: pointer;
+}
+
+.slider-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  min-width: 52px;
+  text-align: right;
+}
+
+/* ── 8. TAAL SECTION ── */
+.taal-section {
+  background: var(--bg-surface);
+  border: 1px solid rgba(192,96,32,0.12);
+  border-radius: var(--radius-card);
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.taal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.taal-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.taal-name {
+  font-family: 'Yatra One', serif;
+  font-size: 1.4rem;
+  color: var(--gold-light);
+  letter-spacing: 0.04em;
+}
+
+.taal-name-en {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Beat grid */
+.beat-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+
+.beat-cell {
+  height: 44px;
+  border-radius: 6px;
+  background: var(--bg-raised);
+  border: 1px solid rgba(192,96,32,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: background var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.beat-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.beat-marker {
+  font-family: 'Yatra One', serif;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1;
+}
+
+/* Sam (beat 1) = X */
+.beat-cell.beat-sam .beat-marker  { color: var(--beat-sam); }
+/* Khali (beat 5 in keherwa) = 0 */
+.beat-cell.beat-khali .beat-marker { color: var(--beat-khali); }
+
+/* Active beat cell */
+.beat-cell.is-active {
+  background: rgba(240,192,64,0.12);
+  border-color: var(--gold);
+  box-shadow: 0 0 12px rgba(240,192,64,0.25), inset 0 0 8px rgba(240,192,64,0.08);
+}
+
+.beat-cell.is-active .beat-marker {
+  color: var(--gold-light);
+}
+
+.beat-cell.is-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--gold);
+  animation: beatBarAnim 0.15s ease;
+}
+
+@keyframes beatBarAnim {
+  0%   { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+/* Taal sequence text labels */
+.taal-sequence {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.taal-bol-chip {
+  font-family: 'Yatra One', serif;
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: var(--bg-raised);
+  border: 1px solid rgba(192,96,32,0.15);
+  color: var(--text-secondary);
+  transition: all var(--t-fast);
+  letter-spacing: 0.04em;
+}
+
+.taal-bol-chip.is-active {
+  background: rgba(212,160,32,0.18);
+  border-color: var(--gold);
+  color: var(--gold-light);
+}
+
+/* ── 9. RECORDER SECTION ── */
+.recorder-section {
+  background: var(--bg-surface);
+  border: 1px solid rgba(192,96,32,0.12);
+  border-radius: var(--radius-card);
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.recorder-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.recorder-title {
+  font-family: 'Yatra One', serif;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+/* Blinking record dot */
+.rec-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  display: inline-block;
+  transition: background var(--t-normal), box-shadow var(--t-normal);
+}
+
+.rec-dot.recording {
+  background: var(--rec-red);
+  box-shadow: 0 0 10px var(--rec-red-glow);
+  animation: recBlink 0.9s ease infinite alternate;
+}
+
+@keyframes recBlink {
+  0%   { opacity: 1; }
+  100% { opacity: 0.3; }
+}
+
+/* Recorder controls */
+.recorder-controls {
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+/* ── 10. BUTTONS ── */
+.btn {
+  font-family: 'Noto Serif', serif;
+  font-size: 0.82rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-btn);
+  border: 1px solid;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--t-fast);
+  letter-spacing: 0.04em;
+  background: transparent;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-icon { font-size: 0.85em; }
+
+/* Taal play btn */
+.btn--taal {
+  color: var(--gold-light);
+  border-color: rgba(212,160,32,0.4);
+  background: rgba(212,160,32,0.08);
+}
+
+.btn--taal:hover {
+  background: rgba(212,160,32,0.18);
+  border-color: var(--gold);
+  box-shadow: 0 0 14px rgba(212,160,32,0.25);
+}
+
+.btn--taal.is-playing {
+  background: rgba(212,160,32,0.2);
+  border-color: var(--gold-light);
+  color: var(--gold-light);
+  box-shadow: 0 0 18px rgba(212,160,32,0.35);
+}
+
+/* Record btn */
+.btn--rec {
+  color: #e87070;
+  border-color: rgba(224,48,48,0.35);
+  background: rgba(224,48,48,0.06);
+}
+
+.btn--rec:hover {
+  background: rgba(224,48,48,0.14);
+  border-color: var(--rec-red);
+}
+
+.btn--rec.is-recording {
+  background: rgba(224,48,48,0.2);
+  border-color: var(--rec-red);
+  color: #ff8888;
+  box-shadow: 0 0 14px var(--rec-red-glow);
+}
+
+/* Play recording btn */
+.btn--play-rec {
+  color: var(--text-secondary);
+  border-color: rgba(90,72,48,0.4);
+  background: rgba(42,31,18,0.5);
+}
+
+.btn--play-rec:hover:not(:disabled) {
+  color: var(--cream);
+  border-color: var(--text-secondary);
+}
+
+.btn--play-rec.is-playing {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+/* Clear btn */
+.btn--clear-rec {
+  color: var(--text-muted);
+  border-color: rgba(90,72,48,0.25);
+  background: transparent;
+}
+
+.btn--clear-rec:hover:not(:disabled) {
+  color: #e87070;
+  border-color: rgba(224,48,48,0.35);
+}
+
+/* ── 11. RECORDER TIMELINE ── */
+.rec-timeline {
+  min-height: 44px;
+  background: var(--bg-raised);
+  border-radius: 6px;
+  border: 1px solid rgba(192,96,32,0.1);
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  overflow-x: auto;
+}
+
+.rec-empty-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Individual recorded event chip */
+.rec-event-chip {
+  font-family: 'Yatra One', serif;
+  font-size: 0.7rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  background: rgba(42,31,18,0.8);
+  border: 1px solid rgba(192,96,32,0.2);
+  color: var(--text-secondary);
+  transition: all var(--t-fast);
+  white-space: nowrap;
+}
+
+.rec-event-chip[data-bol="na"]   { border-color: rgba(212,160,32,0.3);  color: var(--gold); }
+.rec-event-chip[data-bol="dha"]  { border-color: rgba(224,120,40,0.35); color: var(--amber); }
+.rec-event-chip[data-bol="dhin"] { border-color: rgba(212,160,32,0.3);  color: var(--gold-light); }
+.rec-event-chip[data-bol="ge"]   { border-color: rgba(58,128,168,0.35); color: var(--bayan-light); }
+
+.rec-event-chip.is-playing {
+  background: rgba(212,160,32,0.2);
+  border-color: var(--gold);
+  color: var(--gold-light);
+  box-shadow: 0 0 6px rgba(212,160,32,0.4);
+}
+
+/* ── 12. FOOTER ── */
+.app-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 1rem 1.5rem 2rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  border-top: 1px solid rgba(192,96,32,0.08);
+  line-height: 1.8;
+}
+
+.app-footer kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  background: var(--bg-raised);
+  border: 1px solid var(--text-muted);
+  color: var(--text-secondary);
+}
+
+.footer-sub {
+  color: rgba(90,72,48,0.6);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+}
+
+/* ── 13. RESPONSIVE ── */
+@media (max-width: 640px) {
+  .pads-container {
+    gap: 2rem;
+  }
+  .pads-row {
+    gap: 1.5rem;
+  }
+  .pad        { width: 96px;  height: 96px;  }
+  .pad--large { width: 116px; height: 116px; }
+  .pad--bayan { width: 112px; height: 112px; }
+  .pad-inner  { inset: 16px; }
+  .bol-deva   { font-size: 1.1rem; }
+  .pad--large .bol-deva { font-size: 1.3rem; }
+
+  .beat-grid  { grid-template-columns: repeat(4, 1fr); }
+
+  .controls-inner { padding: 1rem 1.2rem; }
+  .taal-section,
+  .recorder-section { padding: 1.2rem 1.2rem; }
+
+  .logo-deva { font-size: 1.5rem; }
+}
+
+/* ── 14. SCROLLBAR STYLING ── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: var(--bg-base); }
+::-webkit-scrollbar-thumb  { background: var(--copper-dark); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--copper); }
+
+/* ── 15. SELECTION COLOUR ── */
+::selection {
+  background: rgba(212,160,32,0.3);
+  color: var(--cream);
+}
